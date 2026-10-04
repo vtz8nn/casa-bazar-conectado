@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the public storefront as a single anchored home experience because its primary journey is category discovery followed by WhatsApp contact.
+- Store editable catalog and business content in Lovable Cloud; use local demonstrative content only as an explicit fallback when no records exist.
