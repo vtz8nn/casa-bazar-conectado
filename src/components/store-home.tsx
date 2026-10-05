@@ -5,6 +5,7 @@ import {
   Store, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProductCatalog } from "@/components/product-catalog";
 import heroImage from "@/assets/bazar-hero.jpg";
 import papelariaImage from "@/assets/categoria-papelaria.jpg";
 import utilidadesImage from "@/assets/categoria-utilidades.jpg";
@@ -14,7 +15,7 @@ const WHATSAPP = "https://wa.me/5521983443183?text=Ol%C3%A1%21%20Vi%20o%20site%2
 const MAPS = "https://www.google.com/maps/search/?api=1&query=Estr.+Dr.+M%C3%A1rio+Pinotti%2C+1657+-+Belterra%2C+Nova+Igua%C3%A7u+-+RJ%2C+26262-131";
 
 const nav = [
-  ["Início", "inicio"], ["Produtos", "produtos"], ["Categorias", "categorias"],
+  ["Início", "inicio"], ["Produtos", "loja"], ["Categorias", "categorias"],
   ["Sobre nós", "sobre"], ["Serviços", "servicos"], ["Avaliações", "avaliacoes"],
   ["Localização", "localizacao"], ["Contato", "contato"],
 ] as const;
@@ -51,7 +52,6 @@ export function StoreHome() {
     return () => observer.disconnect();
   }, []);
 
-  const products = filter === "Todos" ? demos : demos.filter((p) => p.category === filter);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -86,13 +86,10 @@ export function StoreHome() {
         </section>
 
         <section id="categorias" className="section-pad reveal bg-card"><div className="shell"><SectionHead eyebrow="Categorias" title="Encontre o que você precisa" text="Uma seleção pensada para facilitar sua rotina e deixar seus espaços mais bonitos." />
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{categories.map(({name, icon: Icon, image, text}, index) => <button key={name} onClick={() => { setFilter(name); scrollTo("produtos"); }} className="group relative min-h-[280px] overflow-hidden rounded-lg text-left shadow-[var(--shadow-card)]"><img src={image} alt={`Categoria ${name}`} loading="lazy" width={1024} height={1024} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" /><span className="category-overlay absolute inset-0" /><span className="absolute inset-x-0 bottom-0 p-6 text-primary-foreground"><span className="mb-4 grid size-10 place-items-center rounded-md bg-background/90 text-primary"><Icon className="size-5" /></span><span className="font-display text-2xl font-semibold">{name}</span><span className="mt-1 block max-w-xs text-sm leading-6 text-primary-foreground/80">{text}</span><span className="mt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em]">Explorar <ArrowRight className="size-4 transition group-hover:translate-x-1" /></span></span><span className="absolute right-5 top-4 font-display text-4xl text-primary-foreground/40">0{index + 1}</span></button>)}</div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{categories.map(({name, icon: Icon, image, text}, index) => <button key={name} onClick={() => { setFilter(name); scrollTo("loja"); }} className="group relative min-h-[280px] overflow-hidden rounded-lg text-left shadow-[var(--shadow-card)]"><img src={image} alt={`Categoria ${name}`} loading="lazy" width={1024} height={1024} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" /><span className="category-overlay absolute inset-0" /><span className="absolute inset-x-0 bottom-0 p-6 text-primary-foreground"><span className="mb-4 grid size-10 place-items-center rounded-md bg-background/90 text-primary"><Icon className="size-5" /></span><span className="font-display text-2xl font-semibold">{name}</span><span className="mt-1 block max-w-xs text-sm leading-6 text-primary-foreground/80">{text}</span><span className="mt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em]">Explorar <ArrowRight className="size-4 transition group-hover:translate-x-1" /></span></span><span className="absolute right-5 top-4 font-display text-4xl text-primary-foreground/40">0{index + 1}</span></button>)}</div>
         </div></section>
 
-        <section id="produtos" className="section-pad reveal"><div className="shell"><div className="grid items-end gap-6 lg:grid-cols-[1fr_auto]"><SectionHead eyebrow="Seleção da loja" title="Produtos em destaque" text="Uma prévia das linhas que você pode encontrar. Consulte disponibilidade e valores diretamente com a loja." /><div className="flex max-w-full gap-2 overflow-x-auto pb-2">{["Todos", "Papelaria", "Organização", "Decoração"].map((item) => <Button key={item} variant={filter === item ? "warm" : "soft"} size="sm" onClick={() => setFilter(item)}>{item}</Button>)}</div></div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">{products.length ? products.map((product) => <article key={product.name} className="overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]"><div className="aspect-[4/3] overflow-hidden"><img src={product.image} alt={product.name} loading="lazy" width={1024} height={1024} className="h-full w-full object-cover transition duration-700 hover:scale-105" /></div><div className="p-6"><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{product.category}</p><h3 className="mt-2 font-display text-2xl font-semibold">{product.name}</h3><p className="mt-2 min-h-12 text-sm leading-6 text-muted-foreground">{product.text}</p><p className="mt-4 inline-flex rounded-sm bg-secondary px-2 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-secondary-foreground">Produto demonstrativo</p><p className="mt-4 text-sm font-semibold">Valor sob consulta</p><Button className="mt-5 w-full" variant="warm" asChild><a href={`${WHATSAPP}%20Tenho%20interesse%20em%20${encodeURIComponent(product.name)}.`} target="_blank" rel="noreferrer"><MessageCircle /> Tenho interesse</a></Button></div></article>) : <div className="col-span-full rounded-lg border border-border bg-card p-10 text-center"><Search className="mx-auto size-8 text-primary" /><h3 className="mt-4 font-display text-2xl">Catálogo em atualização</h3><p className="mt-2 text-sm text-muted-foreground">Fale conosco para consultar os produtos desta categoria.</p></div>}</div>
-          <p className="mt-5 text-xs text-muted-foreground">* Itens demonstrativos para apresentar a estrutura do catálogo. Fotos, nomes, disponibilidade e valores reais podem ser atualizados pela administração.</p>
-        </div></section>
+        <ProductCatalog filter={filter} setFilter={setFilter} />
 
         <section id="sobre" className="section-pad reveal bg-primary text-primary-foreground"><div className="shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"><div className="relative"><img src={decoracaoImage} alt="Seleção acolhedora de decoração e presentes" loading="lazy" width={1024} height={1024} className="aspect-[4/5] w-full rounded-lg object-cover" /><div className="absolute -bottom-5 -right-3 max-w-[210px] rounded-md bg-background p-5 text-foreground shadow-[var(--shadow-float)] sm:right-6"><p className="font-display text-3xl font-semibold text-primary">4,7</p><p className="mt-1 text-xs text-muted-foreground">de 5, com 95 avaliações</p></div></div><div><p className="eyebrow text-primary-foreground/70">Sobre nós</p><h2 className="mt-3 font-display text-4xl font-semibold sm:text-5xl">Sobre a Guilherme Bazar e Papelaria</h2><p className="mt-6 text-base leading-8 text-primary-foreground/75">A Guilherme Bazar e Papelaria oferece uma variedade de produtos para facilitar o dia a dia, com opções de papelaria, utilidades, decoração e muito mais. Nossa proposta é reunir variedade, praticidade e atendimento próximo em um só lugar.</p><Button className="mt-8" variant="cream" size="lg" asChild><a href={WHATSAPP} target="_blank" rel="noreferrer">Conheça nossas opções <ArrowRight /></a></Button></div></div></section>
 
