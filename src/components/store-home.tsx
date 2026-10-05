@@ -29,12 +29,6 @@ const categories = [
   { name: "Novidades", icon: Star, image: papelariaImage, text: "Descobertas e lançamentos que acabaram de chegar." },
 ] as const;
 
-const demos = [
-  { name: "Cadernos e materiais de escrita", category: "Papelaria", image: papelariaImage, text: "Opções para estudo, trabalho e criatividade." },
-  { name: "Organizadores para o lar", category: "Organização", image: utilidadesImage, text: "Peças práticas para uma casa bem organizada." },
-  { name: "Objetos decorativos", category: "Decoração", image: decoracaoImage, text: "Detalhes acolhedores para transformar ambientes." },
-];
-
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
