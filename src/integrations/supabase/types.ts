@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      categorias: {
+        Row: {
+          criada_em: string
+          id: string
+          nome: string
+          slug: string
+        }
+        Insert: {
+          criada_em?: string
+          id?: string
+          nome: string
+          slug: string
+        }
+        Update: {
+          criada_em?: string
+          id?: string
+          nome?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -47,6 +68,72 @@ export type Database = {
           name?: string
           slug?: string
           sort_order?: number
+        }
+        Relationships: []
+      }
+      itens_pedido: {
+        Row: {
+          id: string
+          pedido_id: string
+          preco_unitario: number
+          produto_id: string
+          quantidade: number
+        }
+        Insert: {
+          id?: string
+          pedido_id: string
+          preco_unitario?: number
+          produto_id: string
+          quantidade?: number
+        }
+        Update: {
+          id?: string
+          pedido_id?: string
+          preco_unitario?: number
+          produto_id?: string
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itens_pedido_pedido_id_fkey"
+            columns: ["pedido_id"]
+            isOneToOne: false
+            referencedRelation: "pedidos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itens_pedido_produto_id_fkey"
+            columns: ["produto_id"]
+            isOneToOne: false
+            referencedRelation: "produtos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pedidos: {
+        Row: {
+          cliente_nome: string | null
+          cliente_whatsapp: string | null
+          criado_em: string
+          id: string
+          status: string
+          valor_total: number
+        }
+        Insert: {
+          cliente_nome?: string | null
+          cliente_whatsapp?: string | null
+          criado_em?: string
+          id?: string
+          status?: string
+          valor_total?: number
+        }
+        Update: {
+          cliente_nome?: string | null
+          cliente_whatsapp?: string | null
+          criado_em?: string
+          id?: string
+          status?: string
+          valor_total?: number
         }
         Relationships: []
       }
@@ -99,6 +186,56 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      produtos: {
+        Row: {
+          categoria_id: string
+          criado_em: string
+          descricao: string
+          destaque: boolean
+          id: string
+          imagem_url: string | null
+          nome: string
+          novidade: boolean
+          oferta: boolean
+          preco: number
+          preco_promocional: number | null
+        }
+        Insert: {
+          categoria_id: string
+          criado_em?: string
+          descricao?: string
+          destaque?: boolean
+          id?: string
+          imagem_url?: string | null
+          nome: string
+          novidade?: boolean
+          oferta?: boolean
+          preco: number
+          preco_promocional?: number | null
+        }
+        Update: {
+          categoria_id?: string
+          criado_em?: string
+          descricao?: string
+          destaque?: boolean
+          id?: string
+          imagem_url?: string | null
+          nome?: string
+          novidade?: boolean
+          oferta?: boolean
+          preco?: number
+          preco_promocional?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "produtos_categoria_id_fkey"
+            columns: ["categoria_id"]
+            isOneToOne: false
+            referencedRelation: "categorias"
             referencedColumns: ["id"]
           },
         ]

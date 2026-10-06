@@ -8,6 +8,13 @@
       "when": 1791073387246,
       "tag": "0000_create_store_content",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791319890752,
+      "tag": "0001_loja_pedidos",
+      "breakpoints": true
     }
   ]
 }

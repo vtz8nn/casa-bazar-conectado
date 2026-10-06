@@ -13,7 +13,7 @@ import papelaria from "@/assets/categoria-papelaria.jpg";
 // Preços ilustrativos — podem ser alterados posteriormente pela administração.
 export type Product = {
   id: string; name: string; category: "Papelaria" | "Utilidades" | "Decoração" | "Presentes";
-  price: number; oldPrice?: number; image: string; description: string;
+  price: number; oldPrice?: number | undefined; image: string; description: string;
   isNew?: boolean; featured?: boolean;
 };
 

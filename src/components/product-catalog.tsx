@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MessageCircle, Search, Sparkles, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { catalog, brl, type Product } from "@/data/catalog";
+import { catalog as fallbackCatalog, brl, type Product } from "@/data/catalog";
+import { fetchProducts, registerOrder } from "@/lib/store-db";
 
 const waLink = (p: Product) =>
   `https://wa.me/5521983443183?text=${encodeURIComponent(`Olá! Vi o site da Guilherme Bazar e Papelaria e tenho interesse no produto: ${p.name} (${brl(p.price)}).`)}`;
@@ -26,8 +27,8 @@ function Card({ p, onOpen }: { p: Product; onOpen: (p: Product) => void }) {
           {p.oldPrice && <p className="text-xs text-muted-foreground line-through">{brl(p.oldPrice)}</p>}
           <p className="font-display text-xl font-semibold text-primary sm:text-2xl">{brl(p.price)}</p>
           <div className="mt-3 grid gap-2">
-            <Button variant="warm" size="sm" asChild><a href={waLink(p)} target="_blank" rel="noreferrer">Tenho interesse</a></Button>
-            <Button variant="soft" size="sm" asChild><a href={waLink(p)} target="_blank" rel="noreferrer"><MessageCircle /> WhatsApp</a></Button>
+            <Button variant="warm" size="sm" asChild><a href={waLink(p)} target="_blank" rel="noreferrer" onClick={() => void registerOrder(p.id)}>Tenho interesse</a></Button>
+            <Button variant="soft" size="sm" asChild><a href={waLink(p)} target="_blank" rel="noreferrer" onClick={() => void registerOrder(p.id)}><MessageCircle /> WhatsApp</a></Button>
           </div>
         </div>
       </div>
@@ -42,12 +43,16 @@ const Grid = ({ items, onOpen }: { items: Product[]; onOpen: (p: Product) => voi
 export function ProductCatalog({ filter, setFilter }: { filter: string; setFilter: (f: string) => void }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState<Product | null>(null);
+  const [catalog, setCatalog] = useState<Product[]>(fallbackCatalog);
+  useEffect(() => {
+    fetchProducts().then((rows) => rows.length && setCatalog(rows)).catch((e) => console.error("produtos", e));
+  }, []);
   const active = CATS.includes(filter) ? filter : "Todos";
 
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();
     return catalog.filter((p) => (active === "Todos" || p.category === active) && (!term || `${p.name} ${p.category} ${p.description}`.toLowerCase().includes(term)));
-  }, [q, active]);
+  }, [q, active, catalog]);
 
   return (
     <>
@@ -93,7 +98,7 @@ export function ProductCatalog({ filter, setFilter }: { filter: string; setFilte
               <DialogDescription className="mt-3 text-sm leading-6">{open.description}</DialogDescription>
               {open.oldPrice && <p className="mt-5 text-sm text-muted-foreground line-through">{brl(open.oldPrice)}</p>}
               <p className="font-display text-3xl font-semibold text-primary">{brl(open.price)}</p>
-              <Button className="mt-6" variant="warm" size="lg" asChild><a href={waLink(open)} target="_blank" rel="noreferrer"><MessageCircle /> Tenho interesse</a></Button>
+              <Button className="mt-6" variant="warm" size="lg" asChild><a href={waLink(open)} target="_blank" rel="noreferrer" onClick={() => void registerOrder(open.id)}><MessageCircle /> Tenho interesse</a></Button>
             </div>
           </div>}
         </DialogContent>
