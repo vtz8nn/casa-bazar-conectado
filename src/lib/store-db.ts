@@ -1,4 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 import type { Product } from "@/data/catalog";
 import cadernos from "@/assets/p-cadernos.jpg";
 import escrita from "@/assets/p-escrita.jpg";
