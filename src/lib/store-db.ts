@@ -1,4 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 import type { Product } from "@/data/catalog";
 import cadernos from "@/assets/p-cadernos.jpg";
 import escrita from "@/assets/p-escrita.jpg";
@@ -19,6 +20,14 @@ const localImages: Record<string, string> = {
   "categoria-decoracao": decoracao, "categoria-utilidades": utilidades, "categoria-papelaria": papelaria,
 };
 const resolveImage = (v: string | null) => (v && (localImages[v] ?? (v.startsWith("http") ? v : null))) || papelaria;
+
+// Cliente dedicado: o cliente gerado remove o cabeçalho Authorization, e o
+// banco externo exige esse cabeçalho para autorizar inserts de visitantes.
+const supabase = createClient<Database>(
+  "https://mjwauggklyqajrlkzbdf.supabase.co",
+  "sb_publishable_h29TyGNrjD6UXq805Hw_FA_S7y2_26B",
+  { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+);
 
 export async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase
