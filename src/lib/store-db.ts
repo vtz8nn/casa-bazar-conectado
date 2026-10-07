@@ -24,8 +24,8 @@ const resolveImage = (v: string | null) => (v && (localImages[v] ?? (v.startsWit
 // Cliente dedicado: o cliente gerado remove o cabeçalho Authorization, e o
 // banco externo exige esse cabeçalho para autorizar inserts de visitantes.
 const supabase = createClient<Database>(
-  import.meta.env.VITE_SUPABASE_URL as string,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string,
+  "https://mjwauggklyqajrlkzbdf.supabase.co",
+  "sb_publishable_h29TyGNrjD6UXq805Hw_FA_S7y2_26B",
   { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
 );
 
