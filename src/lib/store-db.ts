@@ -21,6 +21,14 @@ const localImages: Record<string, string> = {
 };
 const resolveImage = (v: string | null) => (v && (localImages[v] ?? (v.startsWith("http") ? v : null))) || papelaria;
 
+// Cliente dedicado: o cliente gerado remove o cabeçalho Authorization, e o
+// banco externo exige esse cabeçalho para autorizar inserts de visitantes.
+const supabase = createClient<Database>(
+  import.meta.env.VITE_SUPABASE_URL as string,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string,
+  { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+);
+
 export async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase
     .from("produtos")
